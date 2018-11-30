@@ -1,3 +1,4 @@
+//Specific purpose is to create array and change the data in the array
 var todoList = {
   todos: [],
   addTodo: function(todoText) {
@@ -41,6 +42,7 @@ var todoList = {
   }
 };
 
+//Specific purpose - handling user interactions. So when someone clicks on a button, there is a response, which is to run one of the methods in the object above, passing in data from the arguments submitted.
 var handlers = {
   addTodo: function() {
     var addTodoTextInput = document.getElementById('addTodoTextInput');
@@ -74,6 +76,7 @@ var handlers = {
   } 
 };
 
+//Specific purpose - to show people what the todo list looks like.
 var view = {
   displayTodos: function() {
     var todosUl = document.querySelector('ul');
