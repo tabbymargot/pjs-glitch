@@ -1,38 +1,20 @@
 var todoList = {
   todos: [],
-  displayTodos: function() {
-    if (this.todos.length === 0) {
-      console.log('Your todo list is empty');
-    } else {
-      console.log('My todos: ');
-      for (i = 0; i < todoList.todos.length; i++) {
-        if (this.todos[i].completed === true) {
-          console.log('(x)', todoList.todos[i].todoText);
-        } else {
-          console.log('( )', todoList.todos[i].todoText);
-        }
-      }
-    }
-  },
   addTodo: function(todoText) {
     this.todos.push({
       todoText: todoText,
       completed: false
     });
-    this.displayTodos();
   },
   changeTodo: function(position, todoText) {
     this.todos[position].todoText = todoText;
-    this.displayTodos();
   },
   deleteTodo: function(position) {
     this.todos.splice(position, 1);
-    this.displayTodos();
   },
   toggleCompleted: function(position) {
     var todo = this.todos[position];
     todo.completed = !todo.completed;
-    this.displayTodos();
   },
   toggleAll: function() {
     var totalTodos = todoList.todos.length;
@@ -55,19 +37,16 @@ var todoList = {
         for (i = 0; i < totalTodos; i++) {
           this.todos[i].completed = true;
         }
-      }  
-    this.displayTodos();
+      }
   }
 };
 
 var handlers = {
-  displayTodos: function() {
-    todoList.displayTodos();
-  },
   addTodo: function() {
     var addTodoTextInput = document.getElementById('addTodoTextInput');
     todoList.addTodo(addTodoTextInput.value);
     addTodoTextInput.value = '';
+    view.displayTodos();
   },
   changeTodo: function() {
     var changeTodoPosition = document.getElementById('changeTodoPosition'); //gets input
@@ -75,18 +54,43 @@ var handlers = {
     todoList.changeTodo(changeTodoPosition.valueAsNumber, changeTodoText.value); // passes the values only into the function and calls the function
     changeTodoPosition.value = '';
     changeTodoText.value = '';
+    view.displayTodos();
   },
   deleteTodo: function() {
     var deleteTodoTextInput = document.getElementById('deleteTodoTextInput');
     todoList.deleteTodo(deleteTodoTextInput.valueAsNumber);
     deleteTodoTextInput.value = '';
+    view.displayTodos();
   },
   toggleCompleted: function () {
     var toggleCompletedInput = document.getElementById('toggleCompletedInput');
     todoList.toggleCompleted(toggleCompletedInput.valueAsNumber);
     toggleCompletedInput.value = '';
+    view.displayTodos();
   },
    toggleAll: function() {
     todoList.toggleAll();
+    view.displayTodos();
   } 
+};
+
+var view = {
+  displayTodos: function() {
+    var todosUl = document.querySelector('ul');
+    todosUl.innerHTML = '';
+    for (var i = 0; i < todoList.todos.length; i++) {
+      var todoLi = document.createElement('li');
+      var todo = todoList.todos[i];
+      var todoTextWithCompletion = '';
+      
+      if (todo.completed === true) {
+          todoTextWithCompletion = '(x) ' + todo.todoText;
+      } else {
+          todoTextWithCompletion = '( ) ' + todo.todoText;
+      }
+      
+      todoLi.textContent = todoTextWithCompletion;
+      todosUl.appendChild(todoLi);
+    }
+  }
 };
