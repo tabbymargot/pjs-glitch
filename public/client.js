@@ -58,10 +58,9 @@ var handlers = {
     changeTodoText.value = '';
     view.displayTodos();
   },
-  deleteTodo: function() {
-    var deleteTodoTextInput = document.getElementById('deleteTodoTextInput');
-    todoList.deleteTodo(deleteTodoTextInput.valueAsNumber);
-    deleteTodoTextInput.value = '';
+  //'position' is passed in by setUpEventListeners method
+  deleteTodo: function(position) {
+    todoList.deleteTodo(position);
     view.displayTodos();
   },
   toggleCompleted: function () {
@@ -92,8 +91,34 @@ var view = {
           todoTextWithCompletion = '( ) ' + todo.todoText;
       }
       
+      todoLi.id = i;
       todoLi.textContent = todoTextWithCompletion;
+      todoLi.appendChild(this.createDeleteButton());//runs the createDeleteButton method below
       todosUl.appendChild(todoLi);
     }
+  },
+  createDeleteButton: function() {
+    var deleteButton = document.createElement('button');//creates button
+    deleteButton.textContent = 'Delete';//adds text
+    deleteButton.className = 'deleteButton';//adds a class
+    return deleteButton;
+  },
+  //this uses a process called 'event delegation' - see review video for version 10
+  setUpEventListeners: function() {
+    var todosUl = document.querySelector('ul');
+    
+    todosUl.addEventListener('click', function(event) {
+      
+      //get the element that was clicked on
+      var elementClicked = event.target;
+
+      if (elementClicked.className === 'deleteButton') {
+        //the argument below gets the id number of the delete button, which is a string. parseInt turns it into a number. 
+        //it is then passed into handlers.deleteTodo.
+        handlers.deleteTodo(parseInt(elementClicked.parentNode.id));
+      }
+    });
   }
 };
+
+view.setUpEventListeners();//runs the code above
