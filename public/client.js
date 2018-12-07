@@ -108,13 +108,13 @@ var view = {
     var todosUl = document.querySelector('ul');
     
     todosUl.addEventListener('click', function(event) {
-      
+    //to really understand the how the code works, run the debugger function here and watch all the functions being triggered!
       //get the element that was clicked on
       var elementClicked = event.target;
 
       if (elementClicked.className === 'deleteButton') {
         //the argument below gets the id number of the delete button, which is a string. parseInt turns it into a number. 
-        //it is then passed into handlers.deleteTodo.
+        //it is then passed into handlers.deleteTodo, which is also run
         handlers.deleteTodo(parseInt(elementClicked.parentNode.id));
       }
     });
